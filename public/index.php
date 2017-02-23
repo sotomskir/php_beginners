@@ -1,40 +1,37 @@
 <?php
-
+ob_start();
 include __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../pimple/pimple.php';
 
 use Acme\Presenters\PersonPresenter;
-use Acme\Repositories\IniDictsRepository;
-use Acme\Repositories\IniPersonRepository;
-use Acme\Repositories\PdoDictsRepository;
 use Acme\Repositories\PdoPersonRepository;
 
-$repository = new IniDictsRepository();
-dump($repository->findAll());
+//if( ! isset($_GET['username'])) {
+//    die("Podaj użytkownika");
+//}
+//
 
-$repository = new PdoDictsRepository();
-dump($repository->findAll());
+//TODO: Dorobić mechanizm sesji
+if($_SERVER['REQUEST_METHOD'] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $auth = new \Acme\Authenticator();
 
-$repository = new IniPersonRepository();
-$persons = $repository->findAll();
-dump($persons);
+    if( ! $auth->authorizeUser($username, $password)) {
+        echo "Not authorized";
+        die();
+    }
 
-$repository = new PdoPersonRepository();
-$persons = $repository->findAll();
-dump($persons);
+    $userRepo = new PdoPersonRepository();
+    $user = $userRepo->findByUsernameOrFail($username);
+    $presenter = new PersonPresenter($user);
+    echo $presenter->printHtml();
+    die();
 
-die();
-$presenter = new PersonPresenter($person);
-//dump($person);
-echo $presenter->printHtml();
-
-//$db = pg_connect('dbname=psat host=localhost user=psat password=psat');
-//$result = pg_query($db, 'select * from persons.persons;');
-//dump($result);
-//echo Dicts::getInstance()->translate('PAL', '2').'<br>';
-//echo Dicts::getInstance()->translate('PAL', '1.4');
-
-//dump($db);
-//$statement = $db->prepare('select * from persons.persons;');
-//$statement->execute();
-//$result = $statement->fetchAll();
-//dump($result);
+} else {
+    echo '<form method="POST">';
+    echo '<input type="text" name="username">';
+    echo '<input type="password" name="password">';
+    echo '<input type="submit">';
+    echo '</form>';
+}
