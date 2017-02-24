@@ -1,4 +1,6 @@
-<?php
+<?php namespace Acme;
+
+use Exception;
 
 class UnCalcException extends Exception
 {

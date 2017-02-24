@@ -30,4 +30,23 @@ class PdoPersonRepository implements PersonRepository
     {
 
     }
+
+    public function findByUsername($username)
+    {
+        $sql = 'SELECT * FROM persons.persons WHERE username = ?;';
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindParam(1, $username, \PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetch(0);
+    }
+
+    public function findByUsernameOrFail($username)
+    {
+        $user = $this->findByUsername($username);
+        if( ! $user) {
+            throw new \Exception("User $username not found");
+        }
+
+        return new Person($user);
+    }
 }

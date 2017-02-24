@@ -1,12 +1,10 @@
-<?php
-require_once __DIR__.'/vendor/autoload.php';
-require_once 'UnCalcException.php';
+<?php namespace Acme;
 
-Class UnCalc{
+Class UnCalc {
 	private $arr;
 	public function __construct($ini_file){
 		$this->arr=parse_ini_file($ini_file,true);
-		//dump($this->arr);
+//		dump($this->arr);
 		foreach ($this->arr as $par =>$val){
 			//echo '<br>'.$par.' ile:'.count($val);
 			$one=false;
@@ -22,7 +20,7 @@ Class UnCalc{
 				throw new UnCalcException("W pliku <b>$ini_file</b> brakuje jednostki bazowej (z przelicznikiem 1) dla kategorii <b>[$par]</b>");
 			}
 		}
-		//dump($this->arr);		
+//		dump($this->arr);
 	}
 	public function show_cat()
 	{
@@ -50,5 +48,10 @@ Class UnCalc{
 		return $r;
 	}
 
+    public function translate($category, $value, $unit1, $unit2)
+    {
+        $un = $this->arr[$category];
+        return $value * $un[$unit1] / $un[$unit2];
+	}
 }
 ?>

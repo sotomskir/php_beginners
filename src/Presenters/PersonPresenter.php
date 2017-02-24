@@ -17,8 +17,10 @@ class PersonPresenter
         $dicts = Dicts::getInstance();
         $html = $this->person->getFirstName().'<br>'
             .$this->person->getLastname().'<br>'
-            .$dicts->translate('Plec', $this->person->getSex()).'<br>'
-            .$dicts->translate('PAL', $this->person->getPal()).'<br>';
+            .$dicts->translate('SEX', $this->person->getSex()).'<br>'
+            .$dicts->translate('PAL', $this->person->getPal()).'<br>'
+			.'BMI:'.$dicts->translate('BMI',$this->person->bmi()).'<br>';
+			
         return $html;
     }
 

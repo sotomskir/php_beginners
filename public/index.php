@@ -1,5 +1,6 @@
 <?php
 ob_start();
+session_start();
 include __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__.'/../pimple/pimple.php';
 

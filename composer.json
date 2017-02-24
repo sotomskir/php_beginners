@@ -1,6 +1,9 @@
 {
     "require": {
-        "symfony/var-dumper": "^3.2"
+        "symfony/var-dumper": "^3.2",
+        "pimple/pimple": "^3.0",
+        "robmorgan/phinx": "^0.7.0",
+        "fzaninotto/faker": "^1.6"
     },
     "autoload": {
         "psr-4": {"Acme\\": "src/"}
